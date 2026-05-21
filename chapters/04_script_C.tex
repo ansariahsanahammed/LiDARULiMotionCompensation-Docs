@@ -1,0 +1,47 @@
+\chapter{C --- C-py\_files\_gen.py}
+
+\section{Purpose}
+Downsamples a .las point cloud file and exports both 10\% and 1\% subsets as new .las files, and also converts them to .csv files. The .csv output is used as input for the Boresight Calibration GUI (E-boresight\_calibration.py).
+
+\section{Background}
+Full .las point cloud files from the ULi system can be very large and are impractical for interactive boresight calibration. This script performs simple stride-based downsampling (keeping every N-th point) to reduce file size while retaining the spatial structure.
+
+\section{User-Configurable Parameters}
+\begin{table}[h!]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+Variable & Default & Description \\ \midrule
+las\_file & R"..." & Full path to the input .las file \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\section{Running the Script}
+\begin{lstlisting}[language=bash]
+python C-py_files_gen.py
+\end{lstlisting}
+
+\section{Outputs}
+All outputs are saved to the same directory as the input .las file:
+\begin{itemize}
+    \item \texttt{10\%\_<filename>.las}: 10\% downsampled point cloud
+    \item \texttt{1\%\_<filename>.las}: 1\% downsampled point cloud
+    \item \texttt{10\%\_<filename>.csv}: CSV with columns: \texttt{gps\_time, x, y, z}
+    \item \texttt{1\%\_<filename>.csv}: CSV with columns: \texttt{gps\_time, x, y, z}
+\end{itemize}
+
+\section{CSV Column Format}
+\texttt{gps\_time,x,y,z} \\
+\texttt{581310.123456,0.12345678,0.23456789,-0.34567890}
+
+\section{Possible Errors}
+\begin{table}[h!]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+Error & Cause & Fix \\ \midrule
+FileNotFoundError & Incorrect path & Use raw string path \\
+AttributeError: 'gps\_time' & Missing GPS time & Ensure .las was exported with timestamps \\
+Memory error & File too large & Use a machine with more RAM \\ \bottomrule
+\end{tabular}
+\end{table}

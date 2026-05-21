@@ -1,0 +1,149 @@
+% LTeX: enabled=false
+
+\documentclass[11pt,a4paper]{report}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% \usepackage[default, semibold]{sourcesanspro}
+\usepackage{tgpagella}
+\usepackage[english]{babel}
+\usepackage[top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{xcolor}
+% \usepackage{minted}
+\usepackage{titlesec}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage[nopatch=footnote]{microtype}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{parskip}
+
+\setstretch{1.2}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{myblue}{RGB}{55,138,220}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=myblue,
+    filecolor=myblue,      
+    urlcolor=myblue,
+    citecolor=myblue,
+}
+
+% \lstset{
+%     backgroundcolor=\color{backcolour},   
+%     commentstyle=\color{codegreen},
+%     keywordstyle=\color{magenta},
+%     numberstyle=\tiny\color{codegray},
+%     stringstyle=\color{codepurple},
+%     basicstyle=\ttfamily\footnotesize,
+%     breakatwhitespace=false,         
+%     breaklines=true,                 
+%     captionpos=b,                    
+%     keepspaces=true,                 
+%     numbers=left,                    
+%     numbersep=5pt,                  
+%     showspaces=false,                
+%     showstringspaces=false,
+%     showtabs=false,                  
+%     tabsize=2
+% }
+
+\lstset{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=8pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{codegray},
+    xleftmargin=1.5em,
+    framexleftmargin=1.5em,
+    aboveskip=1em,
+    belowskip=1em,
+}
+
+
+\titleformat{\chapter}
+  {\normalfont\bfseries}{\Huge\thechapter.}{0.5em}{\Huge}
+\titlespacing*{\chapter}{0pt}{0pt}{20pt}
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    % \vspace*{0.3cm}
+    \includegraphics[width=0.5\textwidth]{figures/hcu_logo.png}\\[1cm]
+
+    % {\huge HafenCity Universität Hamburg \par}
+    \vspace{0.5cm}
+    {\huge M.Sc. in Geodesy and Geoinformatics\\with specialization in Hydrography\par}
+    \vspace{1.5cm}
+
+    \vfill
+
+    % {\Large Technical Documentation \par}
+    % \vspace{1.5cm}
+
+    \rule{\linewidth}{0.5mm} \\[0.4cm]
+    {\huge \bfseries ULi Motion Compensation \par}
+    \vspace{0.3cm}
+    {\Large \itshape Python Scripts Documentation \par}
+    \rule{\linewidth}{0.5mm} \\[2cm]
+
+    \vfill
+
+    \vspace{0.5cm}
+    \Large
+    \textbf{Author:}\\
+    \Large Ahsan Ahammed Ansari\\[1cm]
+
+    \Large
+    \textbf{Associated Master's Thesis:}\\
+    Development and Analysis of Motion Compensation Algorithms \\for the Underwater LiDAR ULi\\[1cm]
+    \vfill
+    {\large \href{https://github.com/ansariahsanahammed/LiDARULiMotionCompensation}{GitHub Repository Link}} \\[0.5cm]
+
+\end{titlepage}
+
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\include{chapters/00_overview}
+\include{chapters/01_dependencies}
+\include{chapters/02_script_A}
+\include{chapters/03_script_B}
+\include{chapters/04_script_C}
+\include{chapters/05_script_D}
+\include{chapters/06_script_E}
+\include{chapters/07_script_F}
+\include{chapters/08_script_G}
+\include{chapters/09_workflows}
+\include{chapters/10_data_reference}
+\include{chapters/11_glossary}
+
+\end{document}

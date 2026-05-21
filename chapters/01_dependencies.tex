@@ -1,0 +1,57 @@
+\chapter{Required Dependencies}
+
+The scripts were developed using \textbf{Python 3.12.10}. The following external Python libraries are also required in addition to the standard library. It is recommended to use a virtual environment to avoid conflicts.
+
+\begin{table}[ht!]
+    \centering
+    \begin{tabular}{lll}
+        \toprule
+        Library & Version & Purpose                                                      \\ \midrule
+        laspy   & 2.6.1   & Reading and writing \texttt{.las} point cloud files          \\
+        numpy   & 2.3.2   & Array operations, linear algebra, numerical computation      \\
+        open3d  & 0.19.0  & 3D point cloud visualization                                 \\
+        pandas  & 2.3.1   & Trajectory data manipulation and analysis                    \\
+        scipy   & 1.16.3  & Interpolation, rotation matrix generation                    \\
+        tkinter & -       & GUI for boresight calibration tool (Python Standard Library) \\ \bottomrule
+    \end{tabular}
+    \caption{Required Python Libraries}
+\end{table}
+
+All external libraries can be installed at once using the provided \texttt{requirements.txt} file:
+
+\begin{lstlisting}[language=bash,numbers=none]
+pip install -r requirements.txt
+\end{lstlisting}
+
+Alternatively, they can be installed individually:
+
+\begin{lstlisting}[language=bash,numbers=none]
+pip install laspy==2.6.1 numpy==2.3.2 open3d==0.19.0 pandas==2.3.1 scipy==1.16.3
+\end{lstlisting}
+
+\textbf{Note:} \texttt{tkinter} is part of the Python Standard Library and does not require a separate \texttt{pip} installation. However, on Linux it may need to be installed manually (e.g., \texttt{sudo apt install python3-tk}). To ensure full compatibility, use \textbf{Python 3.12.10}, as the behaviour of standard libraries may vary across Python versions.
+
+
+
+
+
+% \section{Recommended Script Execution Order}
+
+% The scripts are named A through G to indicate their logical order in the two workflows:
+
+% \begin{itemize}
+%     \item \textbf{[Raw Trajectory (.txt)]}
+%     \item \textbf{B-trajectory\_conversion.py} $\leftarrow$ Convert raw trajectory to Pulsalyzer format
+%     \item \textbf{[Pulsalyzer Workflow]}
+%           \begin{itemize}
+%               \item \textbf{A-json\_commander.py} (utility)
+%               \item \textbf{F-pulsalyzer\_real\_time\_visualizer.py}
+%               \item \textbf{G-pulsalyzer\_angles\_from\_python.py}
+%           \end{itemize}
+%     \item \textbf{[Python Workflow]}
+%           \begin{itemize}
+%               \item \textbf{C-py\_files\_gen.py} (downsample .las)
+%               \item \textbf{E-boresight\_calibration.py} (GUI)
+%               \item \textbf{D-python\_workflow.py} (final output)
+%           \end{itemize}
+% \end{itemize}

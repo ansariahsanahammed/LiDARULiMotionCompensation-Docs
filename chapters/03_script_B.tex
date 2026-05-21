@@ -1,0 +1,38 @@
+\chapter{B\_trajectory\_conversion.py}
+
+This script converts the raw trajectory file obtained from the total station measurements into the format which is compatible by Pulsalyzer software. This converted trajectory is also used as the trajectory input for the Python workflow explained in \autoref{ch:pythonWorkflow}.
+
+\section{Background}
+The measurements captured by the total station is logged by the Allterra TS Logger software in a .txt file format. Each row in this file contains a time-of-day timestamp (HHMMSS.SSS format in UTC), previously set station coordinates, a horizontal angle (azimuth), a vertical angle (zenith), and a slope distance.
+
+This script reads the raw trajectory file and performs the following operations:
+
+\begin{enumerate}
+    \item Recomputes Cartesian (X, Y, Z) coordinates from the  polar measurements.
+    \item Converts from left-handed to right-handed coordinate system (negates Y).
+    \item Applies a lever arm correction along Z.
+    \item Converts time-of-day to absolute UNIX-like timestamps (adds UTC-to-TAI offset).
+    \item Outputs in tab-delimited Pulsalyzer format.
+\end{enumerate}
+
+\section{User-Configurable Parameters}
+\begin{table}[ht!]
+    \centering
+    \begin{tabular}{@{}lll@{}}
+        \toprule
+        Variable                       & Default            & Description                           \\ \midrule
+        Year, Month, Day               & '2025', '08', '06' & Date of data collection               \\
+        x\_rot, y\_rot, z\_rot         & 0, 0, 0            & Scanner orientation offsets           \\
+        utc2tai\_offset                & 37                 & UTC-to-TAI offset in seconds          \\
+        prism\_to\_scanner\_lever\_arm & 1.65               & Vertical distance (m) to ULi lens     \\
+        input\_trajectory\_file        & R"..."             & Full path to raw .txt trajectory file \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Running the Script}
+\begin{lstlisting}[language=bash]
+python B-trajectory_conversion.py
+\end{lstlisting}
+
+\section{Output Format}
+Tab-delimited .txt file with header: \texttt{time x y z roll pitch yaw}

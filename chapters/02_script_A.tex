@@ -1,0 +1,35 @@
+\chapter{A\_json\_commander.py}
+
+This is a script provided by Fraunhofer IPM, which can be used to send commands using the JSON interface to programs such as Pulsalyzer. This script thus enables a user to control programs (such as Pulsalyzer) programmatically.
+
+\section{How It Works}
+The script connects to a local TCP socket on 127.0.0.1:44444 (JSON\_Router) and routes JSON-formatted commands to programs and their endpoints.
+
+For more details regarding the JSON interface, its features and detailed usage, visit the local URL \url{http://localhost:5000/ipm/help/jsoniface_help} after launching \texttt{JSONServer}, which is provided by Fraunhofer IPM.
+
+\section{Key Function}
+\texttt{send\_commands(cmds, routing, host="127.0.0.1", port=44444)}
+
+\begin{table}[ht!]
+    \centering
+    \begin{tabular}{lll}
+        \toprule
+        Parameter & Type & Description                                                                  \\
+        \midrule
+        cmds      & list & List of command dictionaries (e.g., \{"cmd": "reprocess\_pointcloud", ...\}) \\
+        routing   & list & Routing path to endpoint (see \autoref{ch:scriptF} for format)               \\
+        host      & str  & IP address of the host (default: \texttt{"127.0.0.1"} (localhost))           \\
+        port      & int  & TCP port of the JSON\_Router (default: 44444)                                \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Usage}
+This script is not run directly. It is to be imported by other scripts, thus controlling programs programmatically. [See \autoref{ch:scriptF} for an example]
+
+\begin{lstlisting}[language=python, numbers=none]
+import A_json_commander as json_commander
+json_commander.send_commands(cmds, routing)
+\end{lstlisting}
+
+\textbf{Note:} \texttt{A\_json\_commander.py} must be placed in the same directory as any script that imports it.

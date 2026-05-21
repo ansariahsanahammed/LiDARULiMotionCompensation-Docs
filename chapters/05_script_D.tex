@@ -1,0 +1,51 @@
+\chapter{D --- D-python\_workflow.py}
+\label{ch:pythonWorkflow}
+
+\section{Purpose}
+The core motion compensation script. Applies a rigid body transformation (rotation + time-interpolated translation) to all points in an input .las file and saves the result as a new .las file. This is the main script of the Python workflow.
+
+\section{Background}
+The ULi scans in motion produce distorted point clouds because the scanner's position changes during data acquisition. This script corrects this by:
+\begin{enumerate}
+    \item Loading the converted Pulsalyzer-format trajectory file.
+    \item Verifying that the .las GPS timestamps are within the trajectory time range.
+    \item Checking trajectory linearity ($R^2 \ge 0.999$).
+    \item Building a rotation matrix from user-defined boresight Euler angles (intrinsic XYZ).
+    \item Processing the .las file in chunks to manage memory.
+    \item Rotating each point and adding the linearly interpolated position.
+\end{enumerate}
+
+\section{User-Configurable Parameters}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{@{}lll@{}}
+        \toprule
+        Variable                            & Default & Description                                      \\ \midrule
+        input\_las\_file                    & R"..."  & Path to uncorrected .las file                    \\
+        input\_pulsalyzer\_trajectory\_file & R"..."  & Path to converted trajectory .txt file           \\
+        x\_rot, y\_rot, z\_rot              & 0       & Boresight rotation (Roll, Pitch, Yaw) in degrees \\
+        chunk\_size                         & 1000000 & Points processed per iteration                   \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Rotation Convention}
+The rotation matrix is built using \textbf{Intrinsic XYZ} rotation convention via \texttt{scipy.spatial.transform.Rotation.from\_euler('XYZ', ...)}.
+The boresight angles calibrated in the thesis were:
+\texttt{x\_rot = 2.5$^{\circ}$, y\_rot = 184$^{\circ}$, z\_rot = 48$^{\circ}$}
+
+\section{Running the Script}
+\begin{lstlisting}[language=bash]
+python D-python_workflow.py
+\end{lstlisting}
+
+\section{Possible Errors}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{@{}lll@{}}
+        \toprule
+        Error                       & Cause                 & Fix                                            \\ \midrule
+        Trajectory is not linear    & $R^2 < 0.999$         & Verify trajectory file/Sync issues             \\
+        GPS time exceeds trajectory & Time range mismatch   & Check UTC-TAI offset in Script B               \\
+        Memory error                & chunk\_size too large & Reduce \texttt{chunk\_size} (e.g., to 100,000) \\ \bottomrule
+    \end{tabular}
+\end{table}

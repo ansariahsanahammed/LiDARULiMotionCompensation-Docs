@@ -1,0 +1,52 @@
+\chapter{E --- E-boresight\_calibration.py}
+
+\section{Purpose}
+An interactive GUI application for visually determining the boresight rotation angles. It uses Open3D for 3D visualization and Tkinter for the control panel.
+
+\section{Background}
+The boresight calibration process involves adjusting three rotation angles (Roll/X, Pitch/Y, Yaw/Z) until the point cloud appears geometrically correct. The tool applies the rigid body transformation in real time as sliders are moved.
+
+\section{Input File Requirements}
+\begin{table}[h!]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+File & Format & Columns Required \\ \midrule
+Point Cloud & .csv & \texttt{gps\_time, x, y, z} \\
+Trajectory & .txt & \texttt{time, x, y, z, roll, pitch, yaw} \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\section{Running the Script}
+\begin{lstlisting}[language=bash]
+python E-boresight_calibration.py
+\end{lstlisting}
+Two windows open simultaneously: \textbf{Boresight Calibration Controls} (Tkinter) and \textbf{Boresight Calibration Viewer} (Open3D).
+
+\section{Workflow}
+\begin{enumerate}
+    \item Click "Point Cloud (.csv)" $\rightarrow$ select the downsampled file from Script C.
+    \item Click "Trajectory (.txt)" $\rightarrow$ select the converted file from Script B.
+    \item Click "Apply \& View" $\rightarrow$ loads files and shows initial point cloud.
+    \item Adjust Roll (X), Pitch (Y), and Yaw (Z) sliders.
+    \item Note final values for use in Script D.
+\end{enumerate}
+
+\section{Boresight Calibration Strategy}
+\begin{itemize}
+    \item Adjust \textbf{Yaw (Z)} first --- typically has the largest effect on in-plane rotation.
+    \item Adjust \textbf{Pitch (Y)} next to correct for tilt along the direction of motion.
+    \item Adjust \textbf{Roll (X)} for fine vertical tilt.
+\end{itemize}
+
+\section{Possible Errors}
+\begin{table}[h!]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+Error & Cause & Fix \\ \midrule
+ValueError: missing 'gps\_time' & Wrong CSV header & Regenerate CSV using Script C \\
+Open3D window does not open & Version mismatch & Ensure \texttt{open3d==0.19.0} is installed \\
+Very slow slider response & Point cloud too large & Use 1\% CSV instead of 10\% \\ \bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,44 @@
+\chapter{F --- F-pulsalyzer\_real\_time\_visualizer.py}
+\label{ch:scriptF}
+
+\section{Purpose}
+Sends rotation commands to Pulsalyzer via the JSON server in a loop, incrementally updating the scanner transformation angles and triggering a reprocess/redraw. This is used as a Pulsalyzer-side boresight exploration tool.
+
+\section{Background}
+Pulsalyzer accepts scanner transformation commands via its JSON WebServer. This script iterates over a range of angles for one axis (by default, Y-axis) in steps of $1^{\circ}$, allowing the user to visually observe the effect of rotation on the Pulsalyzer-rendered point cloud.
+
+\section{User-Configurable Parameters}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{@{}lll@{}}
+        \toprule
+        Variable               & Default & Description                                          \\ \midrule
+        routing1               & [...]   & Must be updated with actual hostname from Pulsalyzer \\
+        x\_rot, y\_rot, z\_rot & 0, 0, 0 & Initial rotation angles (degrees)                    \\
+        start, stop            & 0, 10   & Range of angle increments to iterate through         \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Prerequisites}
+\begin{itemize}
+    \item Pulsalyzer must be running with a .lidar file loaded and its JSON server active.
+    \item \texttt{A-json\_commander.py} must be in the same directory.
+    \item The hostname must match the device name visible in the Pulsalyzer WebServer interface.
+\end{itemize}
+
+\section{Running the Script}
+\begin{lstlisting}[language=bash]
+python F-pulsalyzer_real_time_visualizer.py
+\end{lstlisting}
+The script applies the initial rotation angles, pauses for a keypress, then enters an infinite loop cycling through the angle range. Press \texttt{Ctrl+C} to stop.
+
+\section{Possible Errors}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{@{}lll@{}}
+        \toprule
+        Error                  & Cause                  & Fix                                                       \\ \midrule
+        ConnectionRefusedError & Pulsalyzer not running & Start Pulsalyzer and enable JSON server                   \\
+        No visible change      & Wrong routing path     & Get hostname from Pulsalyzer and update \texttt{routing1} \\ \bottomrule
+    \end{tabular}
+\end{table}

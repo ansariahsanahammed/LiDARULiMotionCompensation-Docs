@@ -1,0 +1,35 @@
+\chapter{End-to-End Workflow Guide}
+
+\section{Workflow 1 --- Python Motion Compensation}
+Follow these steps in order:
+\begin{enumerate}
+    \item \textbf{Export .las from Pulsalyzer} (without motion correction --- set all transformation angles to 0).
+    \item \textbf{Run Script B} to convert the raw trajectory:
+    \begin{itemize}
+        \item Set Year, Month, Day to match the scan date.
+        \item Set \texttt{prism\_to\_scanner\_lever\_arm} to the actual measured distance.
+        \item Run and verify output .txt exists.
+    \end{itemize}
+    \item \textbf{Run Script C} to generate downsampled CSVs for boresight calibration.
+    \item \textbf{Run Script E} to determine boresight angles:
+    \begin{itemize}
+        \item Adjust sliders until the point cloud is geometrically correct.
+        \item Note the Roll, Pitch, Yaw values.
+    \end{itemize}
+    \item \textbf{Run Script D} to apply final motion compensation:
+    \begin{itemize}
+        \item Set angles to the values from Step 4.
+        \item Run and verify the output \texttt{python\_transformed\_*.las} file.
+    \end{itemize}
+    \item \textbf{Open in CloudCompare} to inspect the result.
+\end{enumerate}
+
+\section{Workflow 2 --- Pulsalyzer Motion Compensation}
+\begin{enumerate}
+    \item \textbf{Run Script B} (same as Python Workflow Step 2).
+    \item \textbf{Load .lidar file in Pulsalyzer} using identity quaternion configuration.
+    \item \textbf{Import trajectory} into Pulsalyzer using the converted .txt from Script B.
+    \item \textbf{Run Script G} to convert Python boresight angles to Pulsalyzer-equivalent angles.
+    \item \textbf{Apply angles in Pulsalyzer} using the command via Script F or the GUI.
+    \item \textbf{Export the result} as .las for comparison.
+\end{enumerate}
