@@ -1,18 +1,17 @@
-\chapter{C --- C-py\_files\_gen.py}
+\chapter{C\_py\_files\_gen.py}
 
-\section{Purpose}
-Downsamples a .las point cloud file and exports both 10\% and 1\% subsets as new .las files, and also converts them to .csv files. The .csv output is used as input for the Boresight Calibration GUI (E-boresight\_calibration.py).
+This script downsamples a \texttt{.las} point cloud, and generates a 10\% and 1\% subset of the original point cloud in both \texttt{.las} and \texttt{.csv} formats. The \texttt{.csv} files are used as input for the boresight calibration GUI (\autoref{ch:scriptE})
 
-\section{Background}
-Full .las point cloud files from the ULi system can be very large and are impractical for interactive boresight calibration. This script performs simple stride-based downsampling (keeping every N-th point) to reduce file size while retaining the spatial structure.
+\section{Downsampling}
+This script performs simple stride-based downsampling (keeping every N-th point) to reduce file size while retaining the spatial structure.
 
 \section{User-Configurable Parameters}
 \begin{table}[h!]
 \centering
-\begin{tabular}{@{}lll@{}}
+\begin{tabularx}{lll}
 \toprule
-Variable & Default & Description \\ \midrule
-las\_file & R"..." & Full path to the input .las file \\ \bottomrule
+Variable  & Default & Description                      \\ \midrule
+las\_file & R"..."  & Full path to the input .las file \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -36,12 +35,12 @@ All outputs are saved to the same directory as the input .las file:
 
 \section{Possible Errors}
 \begin{table}[h!]
-\centering
-\begin{tabular}{@{}lll@{}}
-\toprule
-Error & Cause & Fix \\ \midrule
-FileNotFoundError & Incorrect path & Use raw string path \\
-AttributeError: 'gps\_time' & Missing GPS time & Ensure .las was exported with timestamps \\
-Memory error & File too large & Use a machine with more RAM \\ \bottomrule
-\end{tabular}
+    \centering
+    \begin{tabular}{@{}lll@{}}
+        \toprule
+        Error                       & Cause            & Fix                                      \\ \midrule
+        FileNotFoundError           & Incorrect path   & Use raw string path                      \\
+        AttributeError: 'gps\_time' & Missing GPS time & Ensure .las was exported with timestamps \\
+        Memory error                & File too large   & Use a machine with more RAM              \\ \bottomrule
+    \end{tabular}
 \end{table}

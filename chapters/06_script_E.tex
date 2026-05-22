@@ -1,4 +1,5 @@
-\chapter{E --- E-boresight\_calibration.py}
+\chapter{E\_boresight\_calibration.py}\
+\label{ch:scriptE}
 
 \section{Purpose}
 An interactive GUI application for visually determining the boresight rotation angles. It uses Open3D for 3D visualization and Tkinter for the control panel.
@@ -8,13 +9,13 @@ The boresight calibration process involves adjusting three rotation angles (Roll
 
 \section{Input File Requirements}
 \begin{table}[h!]
-\centering
-\begin{tabular}{@{}lll@{}}
-\toprule
-File & Format & Columns Required \\ \midrule
-Point Cloud & .csv & \texttt{gps\_time, x, y, z} \\
-Trajectory & .txt & \texttt{time, x, y, z, roll, pitch, yaw} \\ \bottomrule
-\end{tabular}
+    \centering
+    \begin{tabular}{@{}lll@{}}
+        \toprule
+        File        & Format & Columns Required                         \\ \midrule
+        Point Cloud & .csv   & \texttt{gps\_time, x, y, z}              \\
+        Trajectory  & .txt   & \texttt{time, x, y, z, roll, pitch, yaw} \\ \bottomrule
+    \end{tabular}
 \end{table}
 
 \section{Running the Script}
@@ -41,12 +42,12 @@ Two windows open simultaneously: \textbf{Boresight Calibration Controls} (Tkinte
 
 \section{Possible Errors}
 \begin{table}[h!]
-\centering
-\begin{tabular}{@{}lll@{}}
-\toprule
-Error & Cause & Fix \\ \midrule
-ValueError: missing 'gps\_time' & Wrong CSV header & Regenerate CSV using Script C \\
-Open3D window does not open & Version mismatch & Ensure \texttt{open3d==0.19.0} is installed \\
-Very slow slider response & Point cloud too large & Use 1\% CSV instead of 10\% \\ \bottomrule
-\end{tabular}
+    \centering
+    \begin{tabular}{@{}lll@{}}
+        \toprule
+        Error                           & Cause                 & Fix                                         \\ \midrule
+        ValueError: missing 'gps\_time' & Wrong CSV header      & Regenerate CSV using Script C               \\
+        Open3D window does not open     & Version mismatch      & Ensure \texttt{open3d==0.19.0} is installed \\
+        Very slow slider response       & Point cloud too large & Use 1\% CSV instead of 10\%                 \\ \bottomrule
+    \end{tabular}
 \end{table}

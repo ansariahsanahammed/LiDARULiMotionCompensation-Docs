@@ -1,17 +1,12 @@
 \chapter{Overview}
 
-% \begin{itemize}[leftmargin=*]
-%     \item \textbf{Project:} Development and Analysis of Motion Compensation Algorithms for the Underwater LiDAR ULi
-%     \item \textbf{Institution:} HafenCity Universität Hamburg
-%     \item \textbf{Repository:} \href{https://github.com/ansariahsanahammed/LiDARULiMotionCompensation}{github.com/ansariahsanahammed/LiDARULiMotionCompensation}
-%     \item \textbf{Python Version:} 3.12.10
-% \end{itemize}
-
 This document provides the documentation for Python scripts developed as part of a master's thesis titled "Development and Analysis of Motion Compensation Algorithms for the Underwater LiDAR ULi" at the HafenCity Universität Hamburg. The scripts were developed for the motion compensation and boresight calibration of point clouds acquired with the ULi system, an underwater laser scanning system developed by Fraunhofer IPM.
 
 \section{Research Context}
 
 The ULi system was mounted on a linear motion unit in a recirculating flume at the Bundesanstalt für Wasserbau (BAW), Hamburg, Germany. Data was acquired while the ULi system was moved linearly, which caused motion-induced distortions in the resulting point clouds. To correct these distortions, trajectory data was collected using a Trimble SPS930 total station which actively tracked a prism mounted on the motion unit.
+
+The ULi system captures points in the TAI time standard, and the total station in UTC time standard. A conversion from UTC to TAI is thus required to ensure consistency between the point cloud and trajectory data.
 
 Two independent motion compensation workflows were developed:
 
