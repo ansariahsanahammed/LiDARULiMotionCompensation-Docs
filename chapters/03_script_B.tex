@@ -34,14 +34,14 @@ This script reads the raw trajectory file and performs the following operations:
 
 \newpage
 \section{Output File}
-The output is a tab-delimited \texttt{.txt} file containing the processed trajectory with the following columns:
+The output is a tab-delimited \texttt{.txt} file containing the processed trajectory with the following columns and a corresponding header:
 
 \begin{table}[ht!]
     \centering
     \begin{tabularx}{\textwidth}{llX}
         \toprule
         Column         & Unit                     & Description                                                                              \\ \midrule
-        \texttt{time}  & seconds (s)              & Timestamps since UNIX epoch (including UTC-to-TAI offset)                                \\\
+        \texttt{time}  & seconds (s)              & Timestamps since UNIX epoch (including UTC-to-TAI offset)                                \\
         \texttt{x}     & metres (m)               & Cartesian X coordinate in the right-handed total station frame                           \\
         \texttt{y}     & metres (m)               & Cartesian Y coordinate in the right-handed total station frame                           \\
         \texttt{z}     & metres (m)               & Cartesian Z coordinate in the right-handed total station frame with lever arm correction \\
@@ -65,3 +65,26 @@ where,
     \item \texttt{utc2tai\_offset} is the UTC-to-TAI offset in seconds
     \item \texttt{x\_rot, y\_rot, z\_rot} are the scanner orientation offsets
 \end{itemize}
+
+\section{Example of conversion}
+
+\subsection*{Raw trajectory}
+
+\begin{lstlisting}[numbers=none]
+101533.231 548775.866 5937527.313 10.950 208.58550 99.53554 35.764
+101533.281 548775.866 5937527.312 10.950 208.58530 99.53544 35.763
+101533.331 548775.866 5937527.313 10.950 208.58550 99.53534 35.764
+101533.382 548775.867 5937527.313 10.950 208.58570 99.53534 35.764
+101533.433 548775.866 5937527.313 10.950 208.58560 99.53534 35.764
+\end{lstlisting}
+
+\subsection*{Converted trajectory}
+
+\begin{lstlisting}[numbers=none]
+time	x	y	z	roll	pitch	yaw
+1754475370.231000	-35.438322	4.808424	-1.389078	0.000	0.000	0.000
+1754475370.281000	-35.437346	4.808178	-1.389029	0.000	0.000	0.000
+1754475370.331000	-35.438321	4.808424	-1.388966	0.000	0.000	0.000
+1754475370.382000	-35.438306	4.808535	-1.388966	0.000	0.000	0.000
+1754475370.433000	-35.438314	4.808479	-1.388966	0.000	0.000	0.000
+\end{lstlisting}

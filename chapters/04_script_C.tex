@@ -1,24 +1,24 @@
 \chapter{C\_py\_files\_gen.py}
 
-This script downsamples a \texttt{.las} point cloud, and generates a 10\% and 1\% subset of the original point cloud in both \texttt{.las} and \texttt{.csv} formats. The \texttt{.csv} files are used as input for the boresight calibration GUI (\autoref{ch:scriptE})
+This script downsamples a \texttt{.las} point cloud to 10\% and 1\% of the original dataset. The downsampled point clouds are then saved as both \texttt{.las} and \texttt{.csv} files. The \texttt{.csv} files are used as input for the boresight calibration GUI (\autoref{ch:scriptE})
 
-\section{Downsampling}
-This script performs simple stride-based downsampling (keeping every N-th point) to reduce file size while retaining the spatial structure.
+\section{Process}
+
+The \texttt{.las} files are read using the \texttt{laspy} Python library, and the downsampling is done by retaining every n\textsuperscript{th} (10\textsuperscript{th} and 100\textsuperscript{th} for 10\% and 1\% respectively) point from the input \texttt{.las} file. These retained points and its associated attributes are then saved as a new \texttt{.las} file.
+
+A simple human-readable \texttt{.csv} file of an input \texttt{.las} file is generated which only contain the fields \texttt{gps\_time, x, y, z} for simpler tasks and analysis.
 
 \section{User-Configurable Parameters}
-\begin{table}[h!]
-\centering
-\begin{tabularx}{lll}
-\toprule
-Variable  & Default & Description                      \\ \midrule
-las\_file & R"..."  & Full path to the input .las file \\ \bottomrule
-\end{tabular}
+\begin{table}[ht!]
+    \centering
+    \begin{tabularx}{\textwidth}{llX}
+        \toprule
+        Variable  & Default & Description                                                                          \\
+        \midrule
+        las\_file & R"..."  & Full path to the input .las file (e.g.: \texttt{\detokenize{R"C:\Folder\file.txt"}}) \\
+        \bottomrule
+    \end{tabularx}
 \end{table}
-
-\section{Running the Script}
-\begin{lstlisting}[language=bash]
-python C-py_files_gen.py
-\end{lstlisting}
 
 \section{Outputs}
 All outputs are saved to the same directory as the input .las file:
@@ -29,18 +29,4 @@ All outputs are saved to the same directory as the input .las file:
     \item \texttt{1\%\_<filename>.csv}: CSV with columns: \texttt{gps\_time, x, y, z}
 \end{itemize}
 
-\section{CSV Column Format}
-\texttt{gps\_time,x,y,z} \\
-\texttt{581310.123456,0.12345678,0.23456789,-0.34567890}
 
-\section{Possible Errors}
-\begin{table}[h!]
-    \centering
-    \begin{tabular}{@{}lll@{}}
-        \toprule
-        Error                       & Cause            & Fix                                      \\ \midrule
-        FileNotFoundError           & Incorrect path   & Use raw string path                      \\
-        AttributeError: 'gps\_time' & Missing GPS time & Ensure .las was exported with timestamps \\
-        Memory error                & File too large   & Use a machine with more RAM              \\ \bottomrule
-    \end{tabular}
-\end{table}
