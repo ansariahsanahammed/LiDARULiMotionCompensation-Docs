@@ -1,12 +1,12 @@
 \chapter{C\_py\_files\_gen.py}
 
-This script downsamples a \texttt{.las} point cloud to 10\% and 1\% of the original dataset. The downsampled point clouds are then saved as both \texttt{.las} and \texttt{.csv} files. The \texttt{.csv} files are used as input for the boresight calibration GUI (\autoref{ch:scriptE})
+This script downsamples a \texttt{.las} point cloud to 10\% and 1\% of the original dataset. The downsampled point clouds are saved as both \texttt{.las} and \texttt{.csv} files. The \texttt{.csv} files are used as input for the boresight calibration GUI (\autoref{ch:scriptE})
 
-\section{Process}
+\section{How It Works}
 
-The \texttt{.las} files are read using the \texttt{laspy} Python library, and the downsampling is done by retaining every n\textsuperscript{th} (10\textsuperscript{th} and 100\textsuperscript{th} for 10\% and 1\% respectively) point from the input \texttt{.las} file. These retained points and its associated attributes are then saved as a new \texttt{.las} file.
+The \texttt{.las} file is read using the \texttt{laspy} Python library. Downsampling is done by retaining every n\textsuperscript{th} point from the input file - every 10\textsuperscript{th} point for 10\% downsampling, and every 100\textsuperscript{th} point for 1\% downsampling. The retained points along with all their associated attributes are written to a new \texttt{.las} file using \texttt{laspy}.
 
-A simple human-readable \texttt{.csv} file of an input \texttt{.las} file is generated which only contain the fields \texttt{gps\_time, x, y, z} for simpler tasks and analysis.
+A \texttt{.csv} file is then generated from each downsampled \texttt{.las} file using \texttt{numpy}. The \texttt{.csv} files contain only the fields \texttt{gps\_time, x, y, z}.
 
 \section{User-Configurable Parameters}
 \begin{table}[ht!]
@@ -15,13 +15,13 @@ A simple human-readable \texttt{.csv} file of an input \texttt{.las} file is gen
         \toprule
         Variable  & Default & Description                                                                          \\
         \midrule
-        las\_file & R"..."  & Full path to the input .las file (e.g.: \texttt{\detokenize{R"C:\Folder\file.txt"}}) \\
+        las\_file & R"..."  & Full path to the input .las file (e.g.: \texttt{\detokenize{R"C:\Folder\file.las"}}) \\
         \bottomrule
     \end{tabularx}
 \end{table}
 
 \section{Outputs}
-All outputs are saved to the same directory as the input .las file:
+All outputs are saved to the same directory as the input \texttt{.las} file.
 \begin{itemize}
     \item \texttt{10\%\_<filename>.las}: 10\% downsampled point cloud
     \item \texttt{1\%\_<filename>.las}: 1\% downsampled point cloud

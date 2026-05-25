@@ -1,51 +1,51 @@
 \chapter{D\_python\_workflow.py}
 \label{ch:pythonWorkflow}
 
-\section{Purpose}
-The core motion compensation script. Applies a rigid body transformation (rotation + time-interpolated translation) to all points in an input .las file and saves the result as a new .las file. This is the main script of the Python workflow.
+This is the script for the Python motion compensation workflow. The motion compensation is done by applying a rigid body transformation (rotation + time-interpolated translation) to all points in an input \texttt{.las} file.
 
-\section{Background}
-The ULi scans in motion produce distorted point clouds because the scanner's position changes during data acquisition. This script corrects this by:
+\section{How It Works}
+This script corrects the motion-induced distortions by:
 \begin{enumerate}
-    \item Loading the converted Pulsalyzer-format trajectory file.
-    \item Verifying that the .las GPS timestamps are within the trajectory time range.
-    \item Checking trajectory linearity ($R^2 \ge 0.999$).
+    \item Loading the distorted \texttt{.las} file.
+    \item Loading the converted Pulsalyzer-format trajectory file and removing duplicate timestamps for linear interpolation.
+    \item Verifying that the \texttt{.las} file timestamps are within the input trajectory time range, if not, stop execution.
+    \item The trajectory is filtered to the corresponding time window of the input \texttt{.las} file.
+    \item Checking trajectory linearity with the condition $R^2 \ge 0.999$. If condition fails, stop execution.
+    \item Linear interpolation functions are then built for $x$, $y$, and $z$ as a function of time.
     \item Building a rotation matrix from user-defined boresight Euler angles (intrinsic XYZ).
-    \item Processing the .las file in chunks to manage memory.
-    \item Rotating each point and adding the linearly interpolated position.
+    \item Processing the \texttt{.las} file in chunks to manage memory.
+    \item Rotating each point in a chunk using the rotation matrix and adding the linearly interpolated position from the linear interpolation functions.
+    \item Each chunk is written incrementally to an output \texttt{.las} file.
 \end{enumerate}
 
 \section{User-Configurable Parameters}
-\begin{table}[ht!]
+\begin{table}[!ht]
     \centering
-    \begin{tabular}{@{}lll@{}}
+    \begin{tabularx}{\textwidth}{llX}
         \toprule
-        Variable                            & Default & Description                                      \\ \midrule
-        input\_las\_file                    & R"..."  & Path to uncorrected .las file                    \\
-        input\_pulsalyzer\_trajectory\_file & R"..."  & Path to converted trajectory .txt file           \\
-        x\_rot, y\_rot, z\_rot              & 0       & Boresight rotation (Roll, Pitch, Yaw) in degrees \\
-        chunk\_size                         & 1000000 & Points processed per iteration                   \\ \bottomrule
-    \end{tabular}
+        Variable                            & Default & Description                                                                                \\ \midrule
+        input\_las\_file                    & R"..."  & Path to distorted .las file (e.g.: \texttt{\detokenize{R"C:\Folder\file.las"}})            \\
+        input\_pulsalyzer\_trajectory\_file & R"..."  & Path to converted trajectory .txt file (e.g.: \texttt{\detokenize{R"C:\Folder\file.txt"}}) \\
+        x\_rot, y\_rot, z\_rot              & 0       & Boresight rotation angles in degrees                                                       \\
+        chunk\_size                         & 1000000 & Points processed per iteration                                                             \\ \bottomrule
+    \end{tabularx}
 \end{table}
 
 \section{Rotation Convention}
-The rotation matrix is built using \textbf{Intrinsic XYZ} rotation convention via \texttt{scipy.spatial.transform.Rotation.from\_euler('XYZ', ...)}.
-The boresight angles calibrated in the thesis were:
-\texttt{x\_rot = 2.5$^{\circ}$, y\_rot = 184$^{\circ}$, z\_rot = 48$^{\circ}$}
+The rotation matrix is built using the \textbf{Intrinsic XYZ} rotation convention.
 
-\section{Running the Script}
-\begin{lstlisting}[language=bash]
-python D-python_workflow.py
+The module \texttt{scipy.spatial.transform} of the Python library \texttt{scipy} is used for building the rotation matrix. The method used for building the rotation matrix from input angles in degrees following the intrinsic XYZ rotation convention is:
+
+\begin{lstlisting}[numbers=none, language=python]
+Rotation.from\_euler('XYZ', [x\_rot, y\_rot, z\_rot], degrees=True).as\_matrix()
 \end{lstlisting}
 
-\section{Possible Errors}
-\begin{table}[h!]
-    \centering
-    \begin{tabular}{@{}lll@{}}
-        \toprule
-        Error                       & Cause                 & Fix                                            \\ \midrule
-        Trajectory is not linear    & $R^2 < 0.999$         & Verify trajectory file/Sync issues             \\
-        GPS time exceeds trajectory & Time range mismatch   & Check UTC-TAI offset in Script B               \\
-        Memory error                & chunk\_size too large & Reduce \texttt{chunk\_size} (e.g., to 100,000) \\ \bottomrule
-    \end{tabular}
-\end{table}
+For more information on the usage of the module and rotation convention notations, refer to the documentation available at:
+
+\url{https://docs.scipy.org/doc/scipy-1.16.2/reference/generated/scipy.spatial.transform.Rotation.html}
+
+The boresight angles obtained in the thesis were:
+
+\begin{equation*}
+    x\_rot = \qty{2.5}{\degree}, \quad y\_rot = \qty{184}{\degree}, \quad z\_rot = \qty{48}{\degree}
+\end{equation*}

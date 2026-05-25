@@ -1,14 +1,13 @@
 \chapter{F\_pulsalyzer\_real\_time\_visualizer.py}
 \label{ch:scriptF}
 
-\section{Purpose}
-Sends rotation commands to Pulsalyzer via the JSON server in a loop, incrementally updating the scanner transformation angles and triggering a reprocess/redraw. This is used as a Pulsalyzer-side boresight exploration tool.
+This script sends rotation commands to Pulsalyzer using the \texttt{A\_json\_commander.py} script. This script can be used to visualize the effect of rotation on the Pulsalyzer-rendered point cloud in real-time.
 
-\section{Background}
-Pulsalyzer accepts scanner transformation commands via its JSON WebServer. This script iterates over a range of angles for one axis (by default, Y-axis) in steps of $1^{\circ}$, allowing the user to visually observe the effect of rotation on the Pulsalyzer-rendered point cloud.
+\section{How It Works}
+Pulsalyzer accepts a scanner transformation command (\texttt{set\_scanner\_transformation\_deg}) via its JSON WebServer. This script sends commands to Pulsalyzer using the \texttt{A\_json\_commander.py} script in a loop, incrementally updating the scanner transformation angles and triggering a reprocess/redraw of the point cloud in Pulsalyzer.
 
 \section{User-Configurable Parameters}
-\begin{table}[h!]
+\begin{table}[!ht]
     \centering
     \begin{tabular}{@{}lll@{}}
         \toprule
@@ -33,7 +32,7 @@ python F-pulsalyzer_real_time_visualizer.py
 The script applies the initial rotation angles, pauses for a keypress, then enters an infinite loop cycling through the angle range. Press \texttt{Ctrl+C} to stop.
 
 \section{Possible Errors}
-\begin{table}[h!]
+\begin{table}[!ht]
     \centering
     \begin{tabular}{@{}lll@{}}
         \toprule
