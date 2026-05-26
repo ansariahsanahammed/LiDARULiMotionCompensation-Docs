@@ -7,7 +7,7 @@ This is the script for the Python motion compensation workflow. The motion compe
 This script corrects the motion-induced distortions by:
 \begin{enumerate}
     \item Loading the distorted \texttt{.las} file.
-    \item Loading the converted Pulsalyzer-format trajectory file and removing duplicate timestamps for linear interpolation.
+    \item Loading the converted Pulsalyzer format trajectory file and removing duplicate timestamps for linear interpolation.
     \item Verifying that the \texttt{.las} file timestamps are within the input trajectory time range, if not, stop execution.
     \item The trajectory is filtered to the corresponding time window of the input \texttt{.las} file.
     \item Checking trajectory linearity with the condition $R^2 \ge 0.999$. If condition fails, stop execution.

@@ -1,43 +1,38 @@
 \chapter{F\_pulsalyzer\_real\_time\_visualizer.py}
 \label{ch:scriptF}
 
-This script sends rotation commands to Pulsalyzer using the \texttt{A\_json\_commander.py} script. This script can be used to visualize the effect of rotation on the Pulsalyzer-rendered point cloud in real-time.
+This script sends rotation commands to Pulsalyzer using the \texttt{A\_json\_commander.py} script, thus it can be used to visualize the effect of rotation on the Pulsalyzer-rendered point cloud in real-time.
 
 \section{How It Works}
-Pulsalyzer accepts a scanner transformation command (\texttt{set\_scanner\_transformation\_deg}) via its JSON WebServer. This script sends commands to Pulsalyzer using the \texttt{A\_json\_commander.py} script in a loop, incrementally updating the scanner transformation angles and triggering a reprocess/redraw of the point cloud in Pulsalyzer.
+Pulsalyzer accepts a scanner transformation command (\texttt{set\_scanner\_transformation\_deg}) via its JSON WebServer. This script sends the transformation command along with \texttt{reprocess\_pointcloud} and \texttt{redraw\_pointcloud} commands through \texttt{A\_json\_commander.py}, incrementally updating rotation angle along one axis and triggering a reprocess and redraw of the point cloud in Pulsalyzer.
+
+The commands are sent through a \texttt{send\_silent()} function which suppresses terminal output from \texttt{A\_json\_commander.py}, keeping the terminal clean during the loop.
 
 \section{User-Configurable Parameters}
 \begin{table}[!ht]
     \centering
-    \begin{tabular}{@{}lll@{}}
+    \begin{tabularx}{\textwidth}{llX}
         \toprule
-        Variable               & Default & Description                                          \\ \midrule
-        routing1               & [...]   & Must be updated with actual hostname from Pulsalyzer \\
-        x\_rot, y\_rot, z\_rot & 0, 0, 0 & Initial rotation angles (degrees)                    \\
-        start, stop            & 0, 10   & Range of angle increments to iterate through         \\ \bottomrule
-    \end{tabular}
+        Variable               & Default & Description                                                                \\
+        \midrule
+        routing1               & [...]   & Routing path to the Pulsalyzer endpoint; must include the correct hostname \\
+        x\_rot, y\_rot, z\_rot & 0, 0, 0 & Initial rotation angles (degrees)                                          \\
+        start, stop            & 0, 10   & Start and end values of the angle increment range                          \\
+        \bottomrule
+    \end{tabularx}
 \end{table}
 
 \section{Prerequisites}
 \begin{itemize}
-    \item Pulsalyzer must be running with a .lidar file loaded and its JSON server active.
-    \item \texttt{A-json\_commander.py} must be in the same directory.
-    \item The hostname must match the device name visible in the Pulsalyzer WebServer interface.
+    \item JSONServer and Pulsalyzer must be running, with Pulsalyzer having the required \texttt{.lidar} file and its corresponding trajectory loaded and processed.
+    \item \texttt{A\_json\_commander.py} script must be in the same directory as this script.
+    \item The hostname must match the device name visible in the Pulsalyzer WebServer interface (or \texttt{hostname} command in command prompt).
 \end{itemize}
 
-\section{Running the Script}
-\begin{lstlisting}[language=bash]
-python F-pulsalyzer_real_time_visualizer.py
-\end{lstlisting}
-The script applies the initial rotation angles, pauses for a keypress, then enters an infinite loop cycling through the angle range. Press \texttt{Ctrl+C} to stop.
+\section{Usage}
 
-\section{Possible Errors}
-\begin{table}[!ht]
-    \centering
-    \begin{tabular}{@{}lll@{}}
-        \toprule
-        Error                  & Cause                  & Fix                                                       \\ \midrule
-        ConnectionRefusedError & Pulsalyzer not running & Start Pulsalyzer and enable JSON server                   \\
-        No visible change      & Wrong routing path     & Get hostname from Pulsalyzer and update \texttt{routing1} \\ \bottomrule
-    \end{tabular}
-\end{table}
+The script applies the initial rotation angles, pauses for a keypress, then enters an infinite loop cycling through the angle increment range. The loop restarts when the range is exhausted. Press \texttt{Ctrl+C} to stop the loop.
+
+By default, the increment is applied to the Z-axis rotation, modify as needed for other axes. The update rate of point cloud in the 3D viewer of Pulsalyzer depends on the \texttt{point\_step} parameter of commands \texttt{reprocess\_pointcloud} and \texttt{redraw\_pointcloud}.
+
+This script was used in the thesis to identify the hidden rotation angle applied internally by Pulsalyzer. By iterating through a range of rotation angles (\qty{-180}{\degree} to \qty{180}{\degree}) about the X and Z axes and observing the rendered point cloud in real-time, the angles at which the Pulsalyzer output visually matched the Python translation-only reference output was identified as \qty{180}{\degree}, \qty{0}{\degree}, \qty{90}{\degree} for X, Y, and Z axes respectively. This hidden rotation matrix was then used to derive the mathematical relationship between the Python and Pulsalyzer boresight angles.
