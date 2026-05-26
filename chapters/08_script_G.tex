@@ -1,39 +1,48 @@
 \chapter{G\_pulsalyzer\_angles\_from\_python.py}
 
-This script calculates the equivalent rotation angles for Pulsalyzer to obtain the same point cloud as the Python workflow (obtained using the boresight calibration angles). This calculation is necessary because:
+This script calculates the equivalent rotation angles for Pulsalyzer that produce the same point cloud output as the Python workflow, given the boresight calibration angles obtained from Script E (\autoref{ch:scriptE}). This calculation is necessary because:
 
 \begin{enumerate}
     \item Pulsalyzer has a hidden internal rotation
-    \item Python uses the \textbf{Intrinsic XYZ} rotation convention while Pulsalyzer uses \textbf{Extrinsic XYZ}.
+    \item Python uses the \textbf{Intrinsic XYZ} rotation convention while Pulsalyzer uses \textbf{Extrinsic XYZ}. The same set of angles produces a different rotation matrix under each convention.
 \end{enumerate}
 
 \section{How It Works}
-The two rotation conventions produce different rotation matrices for the same set of angle values. Additionally, Pulsalyzer applies an internal hidden pre-rotation of [\qty{180}{\degree}, \qty{0}{\degree}, \qty{90}{\degree}] around extrinsic X, Y, Z axes before applying the user-provided transformation angles.
+The hidden internal rotation matrix of Pulsalyzer is first constructed from the identified rotation angles [\qty{180}{\degree}, \qty{0}{\degree}, \qty{90}{\degree}] using Extrinsic XYZ convention via \texttt{scipy}. The rotation matrix corresponding to the Python boresight angles is then constructed using Intrinsic XYZ convention. The equivalent rotation matrix for Pulsalyzer is computed, and the corresponding Extrinsic XYZ Euler angles are extracted from it.
 
 \section{Mathematical Relation}
 Let:
 \begin{itemize}
-    \item $R_{\text{Python}}$ = rotation matrix from Python intrinsic XYZ angles
-    \item $R_{\text{internal}}$ = Pulsalyzer's hidden rotation(\texttt{Rotation.from\_euler('xyz', [180, 0, 90], degrees=True)})
-    \item $R_{\text{user}}$ = rotation matrix that the user needs to pass to Pulsalyzer
+    \item $R_{\text{Python}}$ = rotation matrix from Python boresight angles (Intrinsic XYZ)
+    \item $R_{\text{internal}}$ = Pulsalyzer hidden rotation matrix (Extrinsic XYZ: $\qty{180}{\degree}$, $\qty{0}{\degree}$, $\qty{90}{\degree}$)
+    \item $R_{\text{user}}$ = equivalent rotation matrix to be passed to Pulsalyzer (Extrinsic XYZ)
 \end{itemize}
-Then:
+
+For both workflows to produce the same output:
+
 \begin{equation*}
     R_{\text{user}} = R_{\text{internal}}^{T} \cdot R_{\text{Python}}
 \end{equation*}
-The user angles for Pulsalyzer are extracted from $R_{\text{user}}$ using extrinsic XYZ decomposition.
+
+The equivalent Pulsalyzer angles are then extracted from $R_{\text{user}}$ using Extrinsic XYZ decomposition.
 
 \section{User-Configurable Parameters}
 \begin{table}[!ht]
     \centering
     \begin{tabularx}{\textwidth}{llX}
         \toprule
-        Variable & Default      & Description                                                        \\ \midrule
-        X, Y, Z  & 2.5, 184, 48 & Boresight angles in degrees from Python workflow (Scripts D and E) \\ \bottomrule
+        Variable & Default      & Description                                     \\ \midrule
+        X, Y, Z  & 2.5, 184, 48 & Boresight angles (degrees) from Python workflow \\ \bottomrule
     \end{tabularx}
 \end{table}
 
 \section{Output}
-For rotation angles of 2.5, 184, 48 in Python, the equivalent Pulsalyzer angles are \texttt{rx=\qty{1.3}{\degree}, ry=\qty{4.53}{\degree}, rz=\qty{-42.04}{\degree}}.
 
-Pass these values to Pulsalyzer using the \texttt{set\_scanner\_transformation\_deg} command to obtain the same point cloud as the Python workflow.
+The script prints the equivalent Pulsalyzer angles to the terminal. For the Python boresight angles of $\qty{2.5}{\degree}$, $\qty{184}{\degree}$, $\qty{48}{\degree}$, the output is:
+
+\begin{lstlisting}[language=Python, numbers=none]
+For rotation angles of 2.5, 184, 48 in Python,
+Pulsalyzer angles: rx=1.3, ry=4.53, rz=-42.04
+\end{lstlisting}
+
+These angles are to be passed to Pulsalyzer using the \texttt{set\_scanner\_transformation\_deg} command via the WebServer or using \texttt{A\_json\_commander.py} to obtain the same point cloud transformation as the Python workflow.

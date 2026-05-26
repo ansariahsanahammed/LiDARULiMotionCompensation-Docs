@@ -1,35 +1,37 @@
 \chapter{Workflow Guide}
 
-\section{Workflow 1 --- Python Motion Compensation}
-Follow these steps in order:
+\section{Python Motion Compensation Workflow}
 \begin{enumerate}
-    \item \textbf{Export uncorrected .las from Pulsalyzer}
-    \item \textbf{Run Script B} to convert the raw trajectory:
+    \item \textbf{Export uncorrected .las from Pulsalyzer:} Load the \texttt{.lidar} file in Pulsalyzer without providing a trajectory file and export it as \texttt{.las} using the Export LAS option in the Point Cloud window.
+    \item \textbf{Run Script B} to convert the raw trajectory to Pulsalyzer format.
           \begin{itemize}
               \item Set Year, Month, Day to match the scan date.
               \item Set \texttt{prism\_to\_scanner\_lever\_arm} to the actual measured distance.
-              \item Run and verify output .txt exists.
+              \item Run and verify output \texttt{.txt} file is saved to the same folder as the input trajectory file.
           \end{itemize}
-    \item \textbf{Run Script C} to generate downsampled CSVs for boresight calibration.
+    \item \textbf{Run Script C} to generate a 1\% downsampled CSV of the point cloud for use in the boresight calibration tool.
     \item \textbf{Run Script E} to determine boresight angles:
           \begin{itemize}
+              \item Load the downsampled \texttt{.csv} file from step 3 and the converted trajectory file \texttt{.txt} from step 2.
               \item Adjust sliders until the point cloud is geometrically correct.
               \item Note the Roll, Pitch, Yaw values.
           \end{itemize}
     \item \textbf{Run Script D} to apply final motion compensation:
           \begin{itemize}
               \item Set angles to the values from Step 4.
+              \item Set the input \texttt{.las} file path and the converted trajectory \texttt{.txt} path.
               \item Run and verify the output \texttt{python\_transformed\_*.las} file.
           \end{itemize}
     \item \textbf{Open in CloudCompare} to inspect the result.
 \end{enumerate}
 
-\section{Workflow 2 --- Pulsalyzer Motion Compensation}
+\section{Pulsalyzer Motion Compensation Workflow}
 \begin{enumerate}
-    \item \textbf{Run Script B} (same as Python Workflow Step 2).
+    \item \textbf{Run Script B} (same as Python Workflow Step 2) to convert the raw total station trajectory to Pulsalyzer format.
+    \item \textbf{Run Script G} to convert Python boresight angles to Pulsalyzer equivalent angles.
     \item \textbf{Load .lidar file in Pulsalyzer}
-    \item \textbf{Import trajectory} into Pulsalyzer using the converted .txt from Script B.
-    \item \textbf{Run Script G} to convert Python boresight angles to Pulsalyzer-equivalent angles.
-    \item \textbf{Apply angles in Pulsalyzer} using the command via JSON WebServer.
-    \item \textbf{Export the result} as .las for comparison.
+    \item \textbf{Load the Pulsalyzer format trajectory file}
+    \item \textbf{Apply the Pulsalyzer angles} from Step 2 using the \texttt{set\_scanner\_transformation\_deg} command via the JSON WebServer or Script A.
+    \item \textbf{Process and export the result} as \texttt{.las} file.
+    \item \textbf{Open in CloudCompare} to inspect and compare with the Python workflow output
 \end{enumerate}
