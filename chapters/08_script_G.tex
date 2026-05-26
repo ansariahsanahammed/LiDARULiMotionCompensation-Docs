@@ -1,6 +1,11 @@
 \chapter{G\_pulsalyzer\_angles\_from\_python.py}
 
-This script calculates the equivalent rotation angles for Pulsalyzer from the boresight calibration angles determined using the Python workflow. This conversion is necessary because Pulsalyzer has a hidden internal rotation and Python uses the \textbf{Intrinsic XYZ} rotation convention while Pulsalyzer uses \textbf{Extrinsic XYZ}.
+This script calculates the equivalent rotation angles for Pulsalyzer to obtain the same point cloud as the Python workflow (obtained using the boresight calibration angles). This calculation is necessary because:
+
+\begin{enumerate}
+    \item Pulsalyzer has a hidden internal rotation
+    \item Python uses the \textbf{Intrinsic XYZ} rotation convention while Pulsalyzer uses \textbf{Extrinsic XYZ}.
+\end{enumerate}
 
 \section{How It Works}
 The two rotation conventions produce different rotation matrices for the same set of angle values. Additionally, Pulsalyzer applies an internal hidden pre-rotation of [\qty{180}{\degree}, \qty{0}{\degree}, \qty{90}{\degree}] around extrinsic X, Y, Z axes before applying the user-provided transformation angles.
@@ -9,25 +14,26 @@ The two rotation conventions produce different rotation matrices for the same se
 Let:
 \begin{itemize}
     \item $R_{\text{Python}}$ = rotation matrix from Python intrinsic XYZ angles
-    \item $R_{\text{internal}}$ = Pulsalyzer's hidden pre-rotation: \texttt{Rotation.from\_euler('xyz', [180, 0, 90], degrees=True)}
+    \item $R_{\text{internal}}$ = Pulsalyzer's hidden rotation(\texttt{Rotation.from\_euler('xyz', [180, 0, 90], degrees=True)})
     \item $R_{\text{user}}$ = rotation matrix that the user needs to pass to Pulsalyzer
 \end{itemize}
 Then:
-\begin{equation}
+\begin{equation*}
     R_{\text{user}} = R_{\text{internal}}^{T} \cdot R_{\text{Python}}
-\end{equation}
+\end{equation*}
 The user angles for Pulsalyzer are extracted from $R_{\text{user}}$ using extrinsic XYZ decomposition.
 
 \section{User-Configurable Parameters}
 \begin{table}[!ht]
     \centering
-    \begin{tabularx}{llX}
+    \begin{tabularx}{\textwidth}{llX}
         \toprule
-        Variable & Default      & Description                                                   \\ \midrule
-        X, Y, Z  & 2.5, 184, 48 & Boresight angles in degrees from Python workflow (Script D/E) \\ \bottomrule
+        Variable & Default      & Description                                                        \\ \midrule
+        X, Y, Z  & 2.5, 184, 48 & Boresight angles in degrees from Python workflow (Scripts D and E) \\ \bottomrule
     \end{tabularx}
 \end{table}
 
 \section{Output}
-For rotation angles of 2.5, 184, 48 in Python, Pulsalyzer angles: \texttt{rx=<value>, ry=<value>, rz=<value>}.
-Pass these values to Pulsalyzer using the \texttt{set\_scanner\_transformation\_deg} command.
+For rotation angles of 2.5, 184, 48 in Python, the equivalent Pulsalyzer angles are \texttt{rx=\qty{1.3}{\degree}, ry=\qty{4.53}{\degree}, rz=\qty{-42.04}{\degree}}.
+
+Pass these values to Pulsalyzer using the \texttt{set\_scanner\_transformation\_deg} command to obtain the same point cloud as the Python workflow.

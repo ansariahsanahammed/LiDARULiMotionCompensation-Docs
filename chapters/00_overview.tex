@@ -17,8 +17,8 @@ Two independent motion compensation workflows were developed:
 
 The rigid body transformation applied follows the equation:
 
-\begin{equation}
+\begin{equation*}
     P_{\text{world}} = R \cdot P_{\text{local}} + T(t)
-\end{equation}
+\end{equation*}
 
 where $P_{\text{world}}$ is the point coordinate in the total station (world) frame, $P_{\text{local}}$ is the point coordinate in the scanner (local) frame from the \texttt{.las} file, $R$ is a fixed rotation (boresight) matrix defining the relative orientation between the scanner and the total station, and $T(t)$ is the time-interpolated translation vector from the trajectory.

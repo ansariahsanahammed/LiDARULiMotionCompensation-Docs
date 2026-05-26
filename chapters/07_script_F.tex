@@ -1,7 +1,7 @@
 \chapter{F\_pulsalyzer\_real\_time\_visualizer.py}
 \label{ch:scriptF}
 
-This script sends rotation commands to Pulsalyzer using the \texttt{A\_json\_commander.py} script, thus it can be used to visualize the effect of rotation on the Pulsalyzer-rendered point cloud in real-time.
+This script sends rotation commands to Pulsalyzer using the \texttt{A\_json\_commander.py} script, thus it can be used to visualize the effect of rotation on the Pulsalyzer rendered point cloud in real-time.
 
 \section{How It Works}
 Pulsalyzer accepts a scanner transformation command (\texttt{set\_scanner\_transformation\_deg}) via its JSON WebServer. This script sends the transformation command along with \texttt{reprocess\_pointcloud} and \texttt{redraw\_pointcloud} commands through \texttt{A\_json\_commander.py}, incrementally updating rotation angle along one axis and triggering a reprocess and redraw of the point cloud in Pulsalyzer.
@@ -25,13 +25,13 @@ The commands are sent through a \texttt{send\_silent()} function which suppresse
 \section{Prerequisites}
 \begin{itemize}
     \item JSONServer and Pulsalyzer must be running, with Pulsalyzer having the required \texttt{.lidar} file and its corresponding trajectory loaded and processed.
-    \item \texttt{A\_json\_commander.py} script must be in the same directory as this script.
+    \item \texttt{`A\_json\_commander.py'} script must be in the same directory as this script.
     \item The hostname must match the device name visible in the Pulsalyzer WebServer interface (or \texttt{hostname} command in command prompt).
 \end{itemize}
 
 \section{Usage}
 
-The script applies the initial rotation angles, pauses for a keypress, then enters an infinite loop cycling through the angle increment range. The loop restarts when the range is exhausted. Press \texttt{Ctrl+C} to stop the loop.
+The script applies the initial rotation angles, pauses for a keypress, then enters an infinite loop iterating through the angle increment range. The loop restarts when the range is done. Press \texttt{Ctrl+C} to stop the loop.
 
 By default, the increment is applied to the Z-axis rotation, modify as needed for other axes. The update rate of point cloud in the 3D viewer of Pulsalyzer depends on the \texttt{point\_step} parameter of commands \texttt{reprocess\_pointcloud} and \texttt{redraw\_pointcloud}.
 

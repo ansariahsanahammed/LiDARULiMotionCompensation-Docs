@@ -37,14 +37,14 @@ The rotation matrix is built using the \textbf{Intrinsic XYZ} rotation conventio
 The module \texttt{scipy.spatial.transform} of the Python library \texttt{scipy} is used for building the rotation matrix. The method used for building the rotation matrix from input angles in degrees following the intrinsic XYZ rotation convention is:
 
 \begin{lstlisting}[numbers=none, language=python]
-Rotation.from\_euler('XYZ', [x\_rot, y\_rot, z\_rot], degrees=True).as\_matrix()
+Rotation.from_euler('XYZ', [x_rot, y_rot, z_rot], degrees=True).as_matrix()
 \end{lstlisting}
 
 For more information on the usage of the module and rotation convention notations, refer to the documentation available at:
 
 \url{https://docs.scipy.org/doc/scipy-1.16.2/reference/generated/scipy.spatial.transform.Rotation.html}
 
-The boresight angles obtained in the thesis were:
+The boresight angles (obtained from the Boresight Calibration (\autoref{ch:scriptE})) used in the thesis for the Python workflow were:
 
 \begin{equation*}
     x\_rot = \qty{2.5}{\degree}, \quad y\_rot = \qty{184}{\degree}, \quad z\_rot = \qty{48}{\degree}

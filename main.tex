@@ -3,24 +3,21 @@
 \documentclass[11pt,a4paper]{report}
 
 % Packages
-\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{tgpagella}
 \usepackage[english]{babel}
 \usepackage[top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
 \usepackage{siunitx}
 \usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage{tabularx}
 \usepackage{xurl}
 \usepackage{amsmath}
-\usepackage{amssymb}
 \usepackage{booktabs}
 \usepackage{caption}
 \usepackage{listings}
 \usepackage{xcolor}
-% \usepackage{minted}
 \usepackage{titlesec}
-\usepackage{enumerate}
 \usepackage{enumitem}
 \usepackage[nopatch=footnote]{microtype}
 \usepackage{hyperref}
@@ -62,8 +59,8 @@
     tabsize=2,
     frame=single,
     rulecolor=\color{codegray},
-    xleftmargin=1.5em,
-    framexleftmargin=1.5em,
+    %xleftmargin=1.5em,
+    %framexleftmargin=1.5em,
     aboveskip=1em,
     belowskip=1em,
 }
@@ -109,7 +106,9 @@
 \end{titlepage}
 
 \pagenumbering{roman}
-\tableofcontents
+\begin{spacing}{1}
+    \tableofcontents
+\end{spacing}
 \newpage
 \pagenumbering{arabic}
 

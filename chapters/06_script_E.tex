@@ -17,7 +17,7 @@ The boresight calibration process involves adjusting three rotation angles (Roll
     \end{tabularx}
 \end{table}
 
-\section{Usage}
+\section{GUI Windows}
 
 This application opens two windows:
 \begin{enumerate}
@@ -25,33 +25,44 @@ This application opens two windows:
     \item \textbf{Boresight Calibration Viewer} (Open3D) - 3D visualization window.
 \end{enumerate}
 
-\subsection*{Boresight Calibration Workflow}
+\begin{figure}[!htb]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[height=0.22\textheight, keepaspectratio]{figures/boresight_control.png}
+        \caption{Boresight Calibration Controls}
+        \label{fig:boresight_control}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[height=0.22\textheight, width=\linewidth, keepaspectratio]{figures/boresight_viewer.png}
+        \caption{Boresight Calibration Viewer}
+        \label{fig:boresight_viewer}
+    \end{subfigure}
+    \caption{Boresight Calibration Windows}
+    \label{fig:boresight_calibration}
+\end{figure}
+
+\section{Usage}
 \begin{enumerate}
     \item Click "Point Cloud (.csv)" $\rightarrow$ select the downsampled file obtained from Script C (\autoref{ch:scriptC}).
     \item Click "Trajectory (.txt)" $\rightarrow$ select the Pulsalyzer format trajectory file obtained from Script B (\autoref{ch:scriptB}).
     \item Click "Apply \& View" $\rightarrow$ loads files and shows initial point cloud.
     \item Use the following mouse controls to navigate the 3D viewer:
           \begin{itemize}
-              \item \textbf{Left mouse button + drag} --- rotate the view
-              \item \textbf{Middle mouse button + drag (or Ctrl + left click and drag)} --- pan the view
-              \item \textbf{Scroll wheel} --- zoom in/out
+              \item \textbf{Left mouse button + drag} - rotate the view
+              \item \textbf{Middle mouse button + drag (or Ctrl + left click and drag)} - pan the view
+              \item \textbf{Scroll wheel} - zoom in/out
           \end{itemize}
     \item "Reset Camera View" button can be used to reset the camera view and centre the point cloud.
     \item Adjust Roll (X), Pitch (Y), and Yaw (Z) sliders (Text inputs can also be used to set the values).
     \item Note final values for use in the Python workflow (\autoref{ch:pythonWorkflow}).
 \end{enumerate}
 
-\vspace{2cm}
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width=0.5\textwidth]{figures/boresight_control.png}
-    \caption{Boresight Calibration Controls}
-    \label{fig:boresight_control}
-\end{figure}
+\vspace{1cm}
+\textbf{The boresight angles obtained for the thesis were:}
 
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width=0.7\textwidth]{figures/boresight_viewer.png}
-    \caption{Boresight Calibration Viewer}
-    \label{fig:boresight_viewer}
-\end{figure}
+\begin{equation*}
+    \textbf{[\qty{2.5}{\degree}, \qty{184}{\degree}, \qty{48}{\degree}]}
+\end{equation*}
