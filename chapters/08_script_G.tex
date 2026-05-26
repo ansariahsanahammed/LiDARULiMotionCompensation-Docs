@@ -2,10 +2,10 @@
 
 This script calculates the equivalent rotation angles for Pulsalyzer from the boresight calibration angles determined using the Python workflow. This conversion is necessary because Pulsalyzer has a hidden internal rotation and Python uses the \textbf{Intrinsic XYZ} rotation convention while Pulsalyzer uses \textbf{Extrinsic XYZ}.
 
-\section{Background}
-The two rotation conventions produce different rotation matrices for the same set of angle values. Additionally, Pulsalyzer applies an internal hidden pre-rotation of [$180^{\circ}, 0^{\circ}, 90^{\circ}$] around extrinsic X, Y, Z axes before applying the user-provided transformation angles.
+\section{How It Works}
+The two rotation conventions produce different rotation matrices for the same set of angle values. Additionally, Pulsalyzer applies an internal hidden pre-rotation of [\qty{180}{\degree}, \qty{0}{\degree}, \qty{90}{\degree}] around extrinsic X, Y, Z axes before applying the user-provided transformation angles.
 
-\section{Math}
+\section{Mathematical Relation}
 Let:
 \begin{itemize}
     \item $R_{\text{Python}}$ = rotation matrix from Python intrinsic XYZ angles
@@ -19,19 +19,14 @@ Then:
 The user angles for Pulsalyzer are extracted from $R_{\text{user}}$ using extrinsic XYZ decomposition.
 
 \section{User-Configurable Parameters}
-\begin{table}[h!]
+\begin{table}[!ht]
     \centering
-    \begin{tabular}{@{}lll@{}}
+    \begin{tabularx}{llX}
         \toprule
         Variable & Default      & Description                                                   \\ \midrule
         X, Y, Z  & 2.5, 184, 48 & Boresight angles in degrees from Python workflow (Script D/E) \\ \bottomrule
-    \end{tabular}
+    \end{tabularx}
 \end{table}
-
-\section{Running the Script}
-\begin{lstlisting}[language=bash]
-python G-pulsalyzer_angles_from_python.py
-\end{lstlisting}
 
 \section{Output}
 For rotation angles of 2.5, 184, 48 in Python, Pulsalyzer angles: \texttt{rx=<value>, ry=<value>, rz=<value>}.
