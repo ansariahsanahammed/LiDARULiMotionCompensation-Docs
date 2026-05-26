@@ -49,3 +49,13 @@ The boresight angles (obtained from the Boresight Calibration (\autoref{ch:scrip
 \begin{equation*}
     x\_rot = \qty{2.5}{\degree}, \quad y\_rot = \qty{184}{\degree}, \quad z\_rot = \qty{48}{\degree}
 \end{equation*}
+
+\section{Output}
+
+The transformed point cloud is saved as a \texttt{.las} file to the same directory as the input \texttt{.las} file using the following naming convention:
+
+\begin{verbatim}
+python_transformed_{x_rot}_{y_rot}_{z_rot}_{input_filename}.las
+\end{verbatim}
+
+The output file retains all scalar fields of the input file. The LAS header offset is updated to the mean position of the filtered trajectory.
